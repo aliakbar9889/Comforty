@@ -1,9 +1,9 @@
-import { ClerkProvider } from '@clerk/nextjs'; // Removed 'RedirectToSignIn' since it's unused
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider publishableKey="pk_test_d2VsY29tZS1kb3ZlLTY2LmNsZXJrLmFjY291bnRzLmRldiQ">
+    <ClerkProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <Navbar />

@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation'; // Importing `notFound` for handling
 import Image from 'next/image';
 import { FaStar } from 'react-icons/fa'; // React Icons import
 import { useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify'; // Import toastify and ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
 
 // Define the structure of the product data
 interface Product {
@@ -27,12 +29,12 @@ const ProductPage = ({ params }: ProductProps) => {
   // State variables
   const [product, setProduct] = useState<Product | null>(null); // Product data state
 
-  const handleAddToCart = (product: Product) => {
-    const cart: Product[] = JSON.parse(localStorage.getItem('cart') || '[]'); // Fetch current cart from localStorage
-    const updatedCart = [...cart, product]; // Add the selected product to the cart
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Save updated cart back to localStorage
-    alert(`${product.title} added to cart! Click on the cart button at the top to view your cart items list.`); // Feedback alert
-  };
+     const handleAddToCart = (product: Product) => {
+     const cart: Product[] = JSON.parse(localStorage.getItem('cart') || '[]'); // Fetch current cart from localStorage
+     cart.push(product); // Add the selected product to the cart
+     localStorage.setItem('cart', JSON.stringify(cart)); // Save updated cart back to localStorage
+     toast.success(`${product.title} added to cart!`, { position: "top-right" }); // Toastify success message
+   };
 
   // Fetch product data using useEffect
   useEffect(() => {
@@ -57,6 +59,8 @@ const ProductPage = ({ params }: ProductProps) => {
   }
 
   return (
+    <div className='p-2'>
+     <ToastContainer/>
     <div className="p-10 flex flex-col lg:flex-row">
       {/* Left side with image */}
       <div className="lg:w-1/2 mb-10 lg:mb-0 relative">
@@ -99,6 +103,7 @@ const ProductPage = ({ params }: ProductProps) => {
           Add to Cart
         </button>
       </div>
+    </div>
     </div>
   );
 };

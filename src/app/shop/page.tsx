@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { client } from '../../sanity/lib/client';
 import { useRouter } from 'next/navigation'; // For navigation
 import Image from 'next/image'; // Optimized image handling
+import { toast, ToastContainer } from 'react-toastify'; // Import toastify and ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
 
 interface Product {
   _id: string;
@@ -33,20 +35,31 @@ const ShopPage: React.FC = () => {
     fetchProducts(); // Run the function to fetch products
   }, []);
 
+
   // Handle product click to navigate to product detail page
   const handleProductClick = (productId: string) => {
     router.push(`/product/${productId}`); // Navigate to the dynamic product page
   };
 
-  // Handle Add to Cart
-  const handleAddToCart = (product: Product) => {
+    const handleAddToCart = (product: Product) => {
     const cart: Product[] = JSON.parse(localStorage.getItem('cart') || '[]'); // Fetch current cart from localStorage
     cart.push(product); // Add the selected product to the cart
     localStorage.setItem('cart', JSON.stringify(cart)); // Save updated cart back to localStorage
-    alert(`${product.title} added to cart! Click on the cart button at the top to view your items.`); // Feedback alert
+    toast.success(`${product.title} added to cart!`, { position: "top-right" }); // Toastify success message
+  };
+
+  // Handle Add to Wishlist
+  const handleAddToWishlist = (product: Product) => {
+    const wishlist: Product[] = JSON.parse(localStorage.getItem('wishlist') || '[]'); // Fetch current wishlist from localStorage
+    wishlist.push(product); // Add the selected product to the wishlist
+    localStorage.setItem('wishlist', JSON.stringify(wishlist)); // Save updated wishlist back to localStorage
+    toast.info(`${product.title} added to wishlist!`, { position: "top-right" }); // Toastify info message
   };
 
   return (
+    <div className="p-2">
+    {/* Toastify Container */}
+    <ToastContainer />
     <div className="p-10">
       <div className="flex flex-col items-start mb-10 ml-5 mr-5">
         <h1 className="text-3xl font-semibold text-black">All Products</h1>
@@ -76,16 +89,26 @@ const ShopPage: React.FC = () => {
               <p className="text-gray-500">Tags: {product.tags.join(', ')}</p>
             </div>
 
-            {/* Add to Cart Button */}
-            <button
-              onClick={() => handleAddToCart(product)} // Add to Cart handler
-              className="mt-4 bg-gray-600 text-white p-2 rounded-md hover:bg-gray-700"
-            >
-              Add to Cart
-            </button>
+            {/* Buttons */}
+            <div className="flex gap-2 mt-4">
+              <button
+                onClick={() => handleAddToCart(product)} // Add to Cart handler
+                className="bg-gray-600 text-white p-2 rounded-md hover:bg-gray-700"
+              >
+                Add to Cart
+              </button>
+
+              <button
+                onClick={() => handleAddToWishlist(product)} // Add to Wishlist handler
+                className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
+              >
+                Add to Wishlist
+              </button>
+            </div>
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
