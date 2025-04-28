@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { AiOutlineShoppingCart, AiOutlineMenu, AiOutlineSearch, AiOutlineHeart } from "react-icons/ai";
 import Link from "next/link";
+
 import Image from "next/image";
 
 const Navbar: React.FC = () => {
@@ -35,7 +36,7 @@ const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Second Div (Logo and Cart) */}
+        {/* Second Div (Logo and Cart + Wishlist for Mobile) */}
         <div className="w-full flex justify-between items-center bg-gray-100 p-4 rounded-lg mb-4">
           <div className="flex items-center gap-4">
             {/* Logo */}
@@ -45,7 +46,7 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* User Authentication, Cart, Search, and Heart */}
+          {/* Desktop View: User Authentication, Cart, Search, Heart */}
           <div className="hidden sm:flex items-center gap-4 text-sm mr-10">
             {/* Cart */}
             <Link href="/cart">
@@ -60,16 +61,16 @@ const Navbar: React.FC = () => {
 
             {/* Search */}
             <Link href="/search">
-            <button className="bg-white text-black p-2 rounded-full shadow hover:bg-gray-100">
-              <AiOutlineSearch className="text-xl" />
-            </button>
+              <button className="bg-white text-black p-2 rounded-full shadow hover:bg-gray-100">
+                <AiOutlineSearch className="text-xl" />
+              </button>
             </Link>
 
             {/* Heart */}
             <Link href="/wishlist">
-            <button className="bg-white text-black p-2 rounded-full shadow hover:bg-gray-100">
-              <AiOutlineHeart className="text-xl" />
-            </button>
+              <button className="bg-white text-black p-2 rounded-full shadow hover:bg-gray-100">
+                <AiOutlineHeart className="text-xl" />
+              </button>
             </Link>
 
             {/* SignedIn and SignedOut */}
@@ -85,6 +86,16 @@ const Navbar: React.FC = () => {
                 </button>
               </SignInButton>
             </SignedOut>
+          </div>
+
+          {/* Mobile View: Cart and Wishlist Icons */}
+          <div className="sm:hidden flex items-center gap-4">
+            <Link href="/cart">
+              <AiOutlineShoppingCart className="text-black text-2xl hover:text-blue-700" />
+            </Link>
+            <Link href="/wishlist">
+              <AiOutlineHeart className="text-black text-2xl hover:text-blue-700" />
+            </Link>
           </div>
         </div>
 
